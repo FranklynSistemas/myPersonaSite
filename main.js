@@ -1,6 +1,10 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import frankUrl from './assets/franklyn.jpg'
+import spaceUrl from './assets/space.jpg'
+import moonUrl from './assets/moon.jpg'
+import normalUrl from './assets/normal.jpg'
 
 /*
 To work with three.js you need 3 things:
@@ -65,12 +69,12 @@ function addStar() {
 
 Array(200).fill().forEach(addStar)
 
-const spaceTexture = new THREE.TextureLoader().load('space.jpg')
+const spaceTexture = new THREE.TextureLoader().load(spaceUrl)
 scene.background = spaceTexture
 
 // Avatar
 
-const frankTexture = new THREE.TextureLoader().load('franklyn.jpg')
+const frankTexture = new THREE.TextureLoader().load(frankUrl)
 const frank = new THREE.Mesh(
   new THREE.BoxGeometry(3,3,3),
   new THREE.MeshBasicMaterial({ map: frankTexture })
@@ -83,8 +87,8 @@ scene.add(frank)
 
 // Moon
 
-const moonTexture = new THREE.TextureLoader().load('moon.jpg');
-const normalTexture = new THREE.TextureLoader().load('normal.jpg');
+const moonTexture = new THREE.TextureLoader().load(moonUrl);
+const normalTexture = new THREE.TextureLoader().load(normalUrl);
 
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
