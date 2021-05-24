@@ -5,6 +5,10 @@ import frankUrl from './assets/franklyn.jpg'
 import spaceUrl from './assets/space.jpg'
 import moonUrl from './assets/moon.jpg'
 import normalUrl from './assets/normal.jpg'
+import cloudsImage from './assets/2_no_clouds_4k.jpg'
+import elev from './assets/elev_bump_4k.jpg'
+import water from './assets/water_4k.png'
+import fairClouds from './assets/fair_clouds_4k.png'
 
 /*
 To work with three.js you need 3 things:
@@ -15,6 +19,9 @@ To work with three.js you need 3 things:
 
 const pageWidth = window.innerWidth
 const pageHeight = window.innerHeight
+const radius   = 2,
+		segments = 64,
+		rotation = 6;   
 
 const scene = new THREE.Scene()
 
@@ -34,12 +41,14 @@ camera.position.setX(-3)
 
 renderer.render(scene, camera);
 
+/*
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100)
 // const material =  new THREE.MeshBasicMaterial({ color: 0xFF6347, wireframe: true })
 const material =  new THREE.MeshStandardMaterial({ color: 0xFF6347 })
 const torus = new THREE.Mesh( geometry, material )
 
 scene.add(torus)
+*/
 
 const pointLight = new THREE.PointLight(0xffffff)
 pointLight.position.set(5,5,5)
@@ -100,8 +109,45 @@ const moon = new THREE.Mesh(
 
 scene.add(moon);
 
-moon.position.z = 30;
-moon.position.setX(-10);
+moon.position.z = 20;
+moon.position.setX(0);
+
+// Earth
+
+function createSphere() {
+  return new THREE.Mesh(
+    new THREE.SphereGeometry(radius, segments, segments),
+    new THREE.MeshPhongMaterial({
+      map:         new THREE.TextureLoader().load(cloudsImage),
+      bumpMap:     new THREE.TextureLoader().load(elev),
+      bumpScale:   0.005,
+      specularMap: new THREE.TextureLoader().load(water),
+      specular:    new THREE.Color('grey')								
+    })
+  );
+}
+
+function createClouds() {
+  return new THREE.Mesh(
+    new THREE.SphereGeometry(radius + 0.003, segments, segments),			
+    new THREE.MeshPhongMaterial({
+      map:         new THREE.TextureLoader().load(fairClouds),
+      transparent: true
+    })
+  );		
+}
+
+const sphere = createSphere();
+sphere.rotation.y = rotation
+sphere.position.x = 10
+sphere.position.z = 5
+scene.add(sphere)
+
+const clouds = createClouds();
+clouds.rotation.y = rotation
+clouds.position.x = 10
+clouds.position.z = 5
+scene.add(clouds)
 
 
 
@@ -129,10 +175,13 @@ moveCamera();
 
 function animate () {
   requestAnimationFrame( animate )
-
+  sphere.rotation.y += 0.05;
+  clouds.rotation.y += 0.05;
+  /*
   torus.rotation.x += 0.01
   torus.rotation.y += 0.005
   torus.rotation.z += 0.01
+  */
 
   controls.update()
 
